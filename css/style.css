@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css?family=Cookie|Lato&display=swap');
+
+* {
+  box-sizing: border-box;
+  padding: 0px;
+  margin: 0px;
+  font-family: 'Lato', Arial, sans-serif, Times, serif;
+}
+
+body {
+  background-color: #fafafa;
+}
+
+header {
+  background-color: #913710;
+  /* complementary #0B6340 */
+  /* light orange : #DAB37E; */
+  /* greys: #424242 and #fafafa */
+  height: 50px;
+  padding: 10px;
+  font-size: 1.5em;
+}
+
+header a {
+  color: #fafafa;
+  text-decoration: none;
+}
+
+header a:hover {
+  color: #DAB37E;
+}
+
+nav {
+  overflow: hidden;
+}
+
+nav li {
+  list-style: none;
+  float: right;
+  margin-right: 20px;
+}
+
+main {
+  padding: 25px;
+  color: #424242;
+}
+
+main>ul>li{
+  list-style: none;
+}
+
+#sales-lists {
+  overflow: hidden;
+  width: 1350px;
+  margin: 0 auto;
+}
+
+#sales-lists>li {
+  float: left;
+  width: 250px;
+  padding: 10px;
+  margin: 10px;
+  border: 5px solid #913710;
+  border-radius: 25px;
+}
+
+#sales-lists ul {
+  padding-left: 30px;
+}
+
+#sales-lists ul li:last-child {
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+#sales-lists h2 {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+#nav-logo {
+  float: left;
+  font-size: 30px;
+  font-weight: normal;
+}
+
+.centered {
+  display: block;
+  text-align: center;
+  margin: auto;
+}
+
+.logo {
+  padding: 25px;
+  font-size: 4em;
+}
+
+.salmon-fish {
+  font-family: 'Cookie', cursive, Arial, sans-serif, Times, serif;
+}
