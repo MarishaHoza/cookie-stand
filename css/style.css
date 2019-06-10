@@ -4,7 +4,7 @@
   box-sizing: border-box;
   padding: 0px;
   margin: 0px;
-  font-family: 'Lato', sans-serif;
+  font-family: 'Lato', Arial, sans-serif, Times, serif;
 }
 
 body {
@@ -68,6 +68,11 @@ main>ul>li{
   padding-left: 30px;
 }
 
+#sales-lists ul li:last-child {
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
 #sales-lists h2 {
   text-align: center;
   margin-bottom: 10px;
@@ -91,5 +96,5 @@ main>ul>li{
 }
 
 .salmon-fish {
-  font-family: 'Cookie', cursive;
+  font-family: 'Cookie', cursive, Arial, sans-serif, Times, serif;
 }

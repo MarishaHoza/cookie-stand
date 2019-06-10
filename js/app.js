@@ -1,9 +1,13 @@
 'use strict';
 
+// global variables
+
 var openHoursArr = hoursOfOperation();
 var salesListContainer =  document.getElementById('sales-lists');
 
 
+
+// global function to create an array of business hours
 
 function hoursOfOperation(){
   var startTime = 6; // shops open at 6am
@@ -24,7 +28,7 @@ function hoursOfOperation(){
       currentTime++;
     }
   }
-  return workHours; // returns an array with all available work hours... 6am, 7am, 8am, etc.
+  return workHours; // returns an array with all available work hours... eg [6am, 7am, 8am, etc.]
 }
 
 
@@ -51,41 +55,43 @@ var firstAndPike = {
     return roundAnswer;
   },
   totalCookiesPerDay : 0,
-  logCookiesPerDay : [],
+  logOfCookiesPerDay : [],
   calcCookiesPerDay : function(){
     var numOpenHours = hoursOfOperation().length;
     for (var i = 0; i < numOpenHours; i++){
       var cookiesThisHour = Math.round(this.customersPerHour() * this.averageCookiesPerCustomer);
-      this.logCookiesPerDay.push(cookiesThisHour);
+      this.logOfCookiesPerDay.push(cookiesThisHour);
       this.totalCookiesPerDay += cookiesThisHour;
     }
   },
   printCookiesPerDay : function(){
-    this.calcCookiesPerDay();
+    this.calcCookiesPerDay(); // create the number of cookeies each hour
     var temp = [];
     for (var i = 0; i < openHoursArr.length; i++){
-      var phrase = `${openHoursArr[i]}: ${this.logCookiesPerDay[i]} cookies`;
-      temp.push(phrase);
+      var phrase = `${openHoursArr[i]}: ${this.logOfCookiesPerDay[i]} cookies`;
+      temp.push(phrase); // push our phrase 'time of day: number of cookies' into a new temp array
     }
-    temp.push(`Total: ${this.totalCookiesPerDay} cookies`);
+    temp.push(`Total: ${this.totalCookiesPerDay} cookies`); // push the final total into the temp array
 
+    // set up our DOM elements needed
     var liEl = document.createElement('li');
     var h2El = document.createElement('h2');
     var ulEl = document.createElement('ul');
-
     h2El.textContent = this.name;
     liEl.appendChild(h2El);
     liEl.appendChild(ulEl);
 
+    // append all the phrases we created earlier into the list
     for(var j = 0; j < temp.length; j++){
       var innerLiEl = document.createElement('li');
       innerLiEl.textContent = temp[j];
       ulEl.appendChild(innerLiEl);
-
     }
+
+    // append our new list onto the page
     salesListContainer.appendChild(liEl);
   },
-  printShop : function(){},
+  printShop : function(){}, // this will be used later for printing shop stuff onto the index.html page
 };
 
 // ----------------------------- SeaTac Airport -----------------------------
@@ -259,12 +265,12 @@ var alki = {
     return roundAnswer;
   },
   totalCookiesPerDay : 0,
-  logCookiesPerDay : [],
+  logOfCookiesPerDay : [],
   calcCookiesPerDay : function(){
     var numOpenHours = hoursOfOperation().length;
     for (var i = 0; i < numOpenHours; i++){
       var cookiesThisHour = Math.round(this.customersPerHour() * this.averageCookiesPerCustomer);
-      this.logCookiesPerDay.push(cookiesThisHour);
+      this.logOfCookiesPerDay.push(cookiesThisHour);
       this.totalCookiesPerDay += cookiesThisHour;
     }
   },
@@ -272,7 +278,7 @@ var alki = {
     this.calcCookiesPerDay();
     var temp = [];
     for (var i = 0; i < openHoursArr.length; i++){
-      var phrase = `${openHoursArr[i]}: ${this.logCookiesPerDay[i]} cookies`;
+      var phrase = `${openHoursArr[i]}: ${this.logOfCookiesPerDay[i]} cookies`;
       temp.push(phrase);
     }
     temp.push(`Total: ${this.totalCookiesPerDay} cookies`);
@@ -298,8 +304,10 @@ var alki = {
 
 // ------------------- Print information to the page -------------
 
-var cookieShops = [firstAndPike, seaTacAirport, seattleCenter, capitolHill, alki];
+var cookieShops = [firstAndPike, seaTacAirport, seattleCenter, capitolHill, alki]; // array with all our shops
 
+// call the print cookies per day method on all the shops
+// this will add them to the sales page
 for(var i = 0; i < cookieShops.length; i++){
   cookieShops[i].printCookiesPerDay();
 }
