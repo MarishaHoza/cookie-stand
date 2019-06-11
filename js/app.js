@@ -13,8 +13,10 @@ for (var i = 0; i < openHoursArr.length; i++){
 }
 
 
-// global function to create an array of business hours
+// global functions 
 
+
+// to create an array of business hours
 function hoursOfOperation(){
   var startTime = 6; // shops open at 6am
   var endTime = 9; // shops close at 9pm
@@ -36,6 +38,52 @@ function hoursOfOperation(){
   }
   return workHours; // returns an array with all available work hours... eg [6am, 7am, 8am, etc.]
 }
+
+// to calculate the total number of cookies at all locations
+function calcTotal(){
+  var total = 0;
+  for (var i = 0; i < totals.length; i++){
+    total += totals[i];
+  }
+  return total;
+}
+
+
+// *****************************************************************************
+
+// to create the header
+var renderHeader = function (){
+  var trEl = document.createElement('tr'); // create a table row
+  var thEl = document.createElement('th'); // create a table head cell
+  thEl.textContent = 'Location';
+  trEl.appendChild(thEl);
+  for(var i = 0; i < openHoursArr.length; i++){
+    thEl = document.createElement('th');
+    thEl.textContent = openHoursArr[i];
+    trEl.appendChild(thEl);
+  }
+  thEl = document.createElement('th');
+  thEl.textContent = 'Totals';
+  trEl.appendChild(thEl);
+  salesListContainer.appendChild(trEl);
+};
+
+// to create the footer
+var renderFooter = function(){
+  var trEl = document.createElement('tr'); // create a table row
+  var tdEl = document.createElement('td'); // create a table data cell
+  tdEl.textContent = 'Totals';
+  trEl.appendChild(tdEl);
+  for(var k = 0; k < totals.length; k++){
+    tdEl = document.createElement('td');
+    tdEl.textContent = totals[k];
+    trEl.appendChild(tdEl);
+  }
+  tdEl = document.createElement('td');
+  tdEl.textContent = calcTotal();
+  trEl.appendChild(tdEl);
+  salesListContainer.appendChild(trEl);
+};
 
 
 // Location         Min / Cust  	Max / Cust	  Avg Cookie / Sale
@@ -72,7 +120,7 @@ CookieShop.prototype.calcCookiesPerDay = function(){
   }
 };
 
-CookieShop.prototype.printCookiesPerDay = function(){
+CookieShop.prototype.render = function(){
   this.calcCookiesPerDay(); // create the array of the number of cookeies each hour
 
   // set up our DOM elements needed
@@ -106,41 +154,16 @@ shops.push(new CookieShop('Capitol Hill', 20, 38, 2.3));
 shops.push(new CookieShop('Alki', 2, 16, 4.6));
 
 var displaySalesData = function(){
-
   // add header
-  var trEl = document.createElement('tr'); // create a table row
-  var thEl = document.createElement('th'); // create a table head cell
-  thEl.textContent = 'Location';
-  trEl.appendChild(thEl);
-  for(var i = 0; i < openHoursArr.length; i++){
-    thEl = document.createElement('th');
-    thEl.textContent = openHoursArr[i];
-    trEl.appendChild(thEl);
-  }
-  thEl = document.createElement('th');
-  thEl.textContent = 'Totals';
-  trEl.appendChild(thEl);
-  salesListContainer.appendChild(trEl);
+  renderHeader();
 
-  
   // add store data
   for (var j = 0; j < shops.length; j++){
-    shops[j].printCookiesPerDay();
+    shops[j].render();
   }
-
 
   // add footer
-  trEl = document.createElement('tr'); // create a table row
-  var tdEl = document.createElement('td'); // create a table data cell
-  tdEl.textContent = 'Totals';
-  trEl.appendChild(tdEl);
-  for(var k = 0; k < totals.length; k++){
-    tdEl = document.createElement('td');
-    tdEl.textContent = totals[k];
-    trEl.appendChild(tdEl);
-  }
-  salesListContainer.appendChild(trEl);
-
+  renderFooter();
 };
 
 displaySalesData();
