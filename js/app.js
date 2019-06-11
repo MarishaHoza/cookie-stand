@@ -125,7 +125,7 @@ CookieShop.prototype.render = function(){
     tdEl.textContent = this.logOfCookiesPerDay[i];
     trEl.appendChild(tdEl);
 
-    totals[i] += this.logOfCookiesPerDay[i];
+    totals[i] += this.logOfCookiesPerDay[i]; // add the current location's total this hour to the global totals
   }
   tdEl = document.createElement('td');
   tdEl.textContent = this.totalCookiesPerDay;
