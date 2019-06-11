@@ -1,6 +1,6 @@
 'use strict';
 
-// global variables
+// --------------------------- global variables ---------------------------
 
 var openHoursArr = hoursOfOperation();
 var salesListContainer =  document.getElementById('sales-lists');
@@ -13,8 +13,7 @@ for (var i = 0; i < openHoursArr.length; i++){
 }
 
 
-// global functions 
-
+// --------------------------- global functions ---------------------------
 
 // to create an array of business hours
 function hoursOfOperation(){
@@ -49,9 +48,9 @@ function calcTotal(){
 }
 
 
-// *****************************************************************************
+// --------------------------- Other Functions ---------------------------
 
-// to create the header
+// to create the table header
 var renderHeader = function (){
   var trEl = document.createElement('tr'); // create a table row
   var thEl = document.createElement('th'); // create a table head cell
@@ -68,7 +67,7 @@ var renderHeader = function (){
   salesListContainer.appendChild(trEl);
 };
 
-// to create the footer
+// to create the table footer
 var renderFooter = function(){
   var trEl = document.createElement('tr'); // create a table row
   var tdEl = document.createElement('td'); // create a table data cell
@@ -86,15 +85,7 @@ var renderFooter = function(){
 };
 
 
-// Location         Min / Cust  	Max / Cust	  Avg Cookie / Sale
-// 1st and Pike      	  23        	  65	              6.3
-// SeaTac Airport	      3	            24	              1.2
-// Seattle Center	      11	          38	              3.7
-// Capitol Hill	        20	          38	              2.3
-// Alki	                2	            16	              4.6
-
-
-// --------------------------------- Shop constructor ---------------------------------
+// --------------------------- Shop constructor ---------------------------
 
 var CookieShop = function(location, minHourlyCustomers, maxHourlyCustomers, averageCookiesPerCustomer){
   this.location = location;
@@ -145,7 +136,14 @@ CookieShop.prototype.render = function(){
 };
 
 
-// -------------  add shop information and display on the page  -----------------------
+// ---------------------------  add shop information ---------------------------
+
+// Location         Min / Cust  	Max / Cust	  Avg Cookie / Sale
+// 1st and Pike      	  23        	  65	              6.3
+// SeaTac Airport	      3	            24	              1.2
+// Seattle Center	      11	          38	              3.7
+// Capitol Hill	        20	          38	              2.3
+// Alki	                2	            16	              4.6
 
 shops.push(new CookieShop('1st and Pike', 23, 65, 6.3));
 shops.push(new CookieShop('SeaTac Airport', 3, 24, 1.2));
@@ -153,6 +151,8 @@ shops.push(new CookieShop('Seattle Center', 11, 38, 3.7));
 shops.push(new CookieShop('Capitol Hill', 20, 38, 2.3));
 shops.push(new CookieShop('Alki', 2, 16, 4.6));
 
+
+// --------------------------- Render to the page ---------------------------
 var displaySalesData = function(){
   // add header
   renderHeader();
