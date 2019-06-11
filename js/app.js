@@ -4,27 +4,33 @@
 
 var openHoursArr = hoursOfOperation();
 var salesListContainer =  document.getElementById('sales-lists');
+var shops = [];
+var totals = [];
 
+// initiate the totals array with a zero at each time
+for (var i = 0; i < openHoursArr.length; i++){
+  totals.push(0);
+}
 
 
 // global function to create an array of business hours
 
 function hoursOfOperation(){
   var startTime = 6; // shops open at 6am
-  var endTime = 8; // shops close at 8pm
+  var endTime = 9; // shops close at 9pm
   var pm = false;
   var currentTime = startTime;
   var workHours = [];
-  while(pm === false || currentTime <= endTime){
+  while(pm === false || currentTime < endTime){
     if (pm === false && currentTime < 12){
-      workHours.push(currentTime + 'am');
+      workHours.push(currentTime + ':00am');
       currentTime++;
     } else if (pm === false && currentTime === 12){
       pm = true;
-      workHours.push(currentTime + 'pm');
+      workHours.push(currentTime + ':00pm');
       currentTime = 1;
     } else {
-      workHours.push(currentTime + 'pm');
+      workHours.push(currentTime + ':00pm');
       currentTime++;
     }
   }
@@ -40,275 +46,101 @@ function hoursOfOperation(){
 // Alki	                2	            16	              4.6
 
 
-// ----------------------------- First and Pike -----------------------------
+// --------------------------------- Shop constructor ---------------------------------
 
-var firstAndPike = {
-  location : 'First and Pike',
-  minHourlyCustomers : 23,
-  maxHourlyCustomers : 65,
-  averageCookiesPerCustomer : 6.3,
-  customersPerHour : function(){
-    var min = Math.ceil(this.minHourlyCustomers); // make sure minimum is rounded up to a whole integer
-    var max = Math.floor(this.maxHourlyCustomers); // make sure maximum is rounded down to a whole integer
-    var getRandom = Math.random() * (max - min + 1) + min; // generate a random number, ensure it is between equal to or beteween min and max.
-    var roundAnswer = Math.floor(getRandom); // round random number to a whole integer
-    return roundAnswer;
-  },
-  totalCookiesPerDay : 0,
-  logOfCookiesPerDay : [],
-  calcCookiesPerDay : function(){
-    var numOpenHours = hoursOfOperation().length;
-    for (var i = 0; i < numOpenHours; i++){
-      var cookiesThisHour = Math.round(this.customersPerHour() * this.averageCookiesPerCustomer);
-      this.logOfCookiesPerDay.push(cookiesThisHour);
-      this.totalCookiesPerDay += cookiesThisHour;
-    }
-  },
-  printCookiesPerDay : function(){
-    this.calcCookiesPerDay(); // create the number of cookeies each hour
-    var temp = [];
-    for (var i = 0; i < openHoursArr.length; i++){
-      var phrase = `${openHoursArr[i]}: ${this.logOfCookiesPerDay[i]} cookies`;
-      temp.push(phrase); // push our phrase 'time of day: number of cookies' into a new temp array
-    }
-    temp.push(`Total: ${this.totalCookiesPerDay} cookies`); // push the final total into the temp array
-
-    // set up our DOM elements needed
-    var liEl = document.createElement('li');
-    var h2El = document.createElement('h2');
-    var ulEl = document.createElement('ul');
-    h2El.textContent = this.location;
-    liEl.appendChild(h2El);
-    liEl.appendChild(ulEl);
-
-    // append all the phrases we created earlier into the list
-    for(var j = 0; j < temp.length; j++){
-      var innerLiEl = document.createElement('li');
-      innerLiEl.textContent = temp[j];
-      ulEl.appendChild(innerLiEl);
-    }
-
-    // append our new list onto the page
-    salesListContainer.appendChild(liEl);
-  },
-  printShop : function(){}, // this will be used later for printing shop stuff onto the index.html page
+var CookieShop = function(location, minHourlyCustomers, maxHourlyCustomers, averageCookiesPerCustomer){
+  this.location = location;
+  this.minHourlyCustomers = minHourlyCustomers;
+  this.maxHourlyCustomers = maxHourlyCustomers;
+  this.averageCookiesPerCustomer = averageCookiesPerCustomer;
+  this.totalCookiesPerDay = 0;
+  this.logOfCookiesPerDay = [];
 };
 
-// ----------------------------- SeaTac Airport -----------------------------
-
-var seaTacAirport = {
-  location : 'SeaTac Airport',
-  minHourlyCustomers : 3,
-  maxHourlyCustomers : 24,
-  averageCookiesPerCustomer : 1.2,
-  customersPerHour : function(){
-    var min = Math.ceil(this.minHourlyCustomers); // make sure minimum is rounded up to a whole integer
-    var max = Math.floor(this.maxHourlyCustomers); // make sure maximum is rounded down to a whole integer
-    var getRandom = Math.random() * (max - min + 1) + min; // generate a random number, ensure it is between equal to or beteween min and max.
-    var roundAnswer = Math.floor(getRandom); // round random number to a whole integer
-    return roundAnswer;
-  },
-  totalCookiesPerDay : 0,
-  logCookiesPerDay : [],
-  calcCookiesPerDay : function(){
-    var numOpenHours = hoursOfOperation().length;
-    for (var i = 0; i < numOpenHours; i++){
-      var cookiesThisHour = Math.round(this.customersPerHour() * this.averageCookiesPerCustomer);
-      this.logCookiesPerDay.push(cookiesThisHour);
-      this.totalCookiesPerDay += cookiesThisHour;
-    }
-  },
-  printCookiesPerDay : function(){
-    this.calcCookiesPerDay();
-    var temp = [];
-    for (var i = 0; i < openHoursArr.length; i++){
-      var phrase = `${openHoursArr[i]}: ${this.logCookiesPerDay[i]} cookies`;
-      temp.push(phrase);
-    }
-    temp.push(`Total: ${this.totalCookiesPerDay} cookies`);
-
-    var liEl = document.createElement('li');
-    var h2El = document.createElement('h2');
-    var ulEl = document.createElement('ul');
-
-    h2El.textContent = this.location;
-    liEl.appendChild(h2El);
-    liEl.appendChild(ulEl);
-
-    for(var j = 0; j < temp.length; j++){
-      var innerLiEl = document.createElement('li');
-      innerLiEl.textContent = temp[j];
-      ulEl.appendChild(innerLiEl);
-
-    }
-    salesListContainer.appendChild(liEl);
-  },
-  printShop : function(){},
+CookieShop.prototype.customersPerHour = function(){
+  var getRandom = Math.floor(Math.random() * (this.maxHourlyCustomers - this.minHourlyCustomers + 1) + this.minHourlyCustomers); // generate a random number, ensure it is a whole number where:
+  // min <= number <= max.
+  return getRandom;
 };
 
-// ----------------------------- Seattle Center -----------------------------
-
-var seattleCenter = {
-  location : 'Seattle Center',
-  minHourlyCustomers : 11,
-  maxHourlyCustomers : 38,
-  averageCookiesPerCustomer : 3.7,
-  customersPerHour : function(){
-    var min = Math.ceil(this.minHourlyCustomers); // make sure minimum is rounded up to a whole integer
-    var max = Math.floor(this.maxHourlyCustomers); // make sure maximum is rounded down to a whole integer
-    var getRandom = Math.random() * (max - min + 1) + min; // generate a random number, ensure it is between equal to or beteween min and max.
-    var roundAnswer = Math.floor(getRandom); // round random number to a whole integer
-    return roundAnswer;
-  },
-  totalCookiesPerDay : 0,
-  logCookiesPerDay : [],
-  calcCookiesPerDay : function(){
-    var numOpenHours = hoursOfOperation().length;
-    for (var i = 0; i < numOpenHours; i++){
-      var cookiesThisHour = Math.round(this.customersPerHour() * this.averageCookiesPerCustomer);
-      this.logCookiesPerDay.push(cookiesThisHour);
-      this.totalCookiesPerDay += cookiesThisHour;
-    }
-  },
-  printCookiesPerDay : function(){
-    this.calcCookiesPerDay();
-    var temp = [];
-    for (var i = 0; i < openHoursArr.length; i++){
-      var phrase = `${openHoursArr[i]}: ${this.logCookiesPerDay[i]} cookies`;
-      temp.push(phrase);
-    }
-    temp.push(`Total: ${this.totalCookiesPerDay} cookies`);
-
-    var liEl = document.createElement('li');
-    var h2El = document.createElement('h2');
-    var ulEl = document.createElement('ul');
-
-    h2El.textContent = this.location;
-    liEl.appendChild(h2El);
-    liEl.appendChild(ulEl);
-
-    for(var j = 0; j < temp.length; j++){
-      var innerLiEl = document.createElement('li');
-      innerLiEl.textContent = temp[j];
-      ulEl.appendChild(innerLiEl);
-
-    }
-    salesListContainer.appendChild(liEl);
-  },
-  printShop : function(){},
+CookieShop.prototype.calcCookiesPerDay = function(){
+  var numOpenHours = hoursOfOperation().length;
+  for (var i = 0; i < numOpenHours; i++){
+    var cookiesThisHour = Math.round(this.customersPerHour() * this.averageCookiesPerCustomer);
+    this.logOfCookiesPerDay.push(cookiesThisHour);
+    this.totalCookiesPerDay += cookiesThisHour;
+  }
 };
 
-// ----------------------------- Capitol Hill -----------------------------
+CookieShop.prototype.printCookiesPerDay = function(){
+  this.calcCookiesPerDay(); // create the array of the number of cookeies each hour
 
-var capitolHill = {
-  location : 'Capitol Hill',
-  minHourlyCustomers : 20,
-  maxHourlyCustomers : 38,
-  averageCookiesPerCustomer : 2.3,
-  customersPerHour : function(){
-    var min = Math.ceil(this.minHourlyCustomers); // make sure minimum is rounded up to a whole integer
-    var max = Math.floor(this.maxHourlyCustomers); // make sure maximum is rounded down to a whole integer
-    var getRandom = Math.random() * (max - min + 1) + min; // generate a random number, ensure it is between equal to or beteween min and max.
-    var roundAnswer = Math.floor(getRandom); // round random number to a whole integer
-    return roundAnswer;
-  },
-  totalCookiesPerDay : 0,
-  logCookiesPerDay : [],
-  calcCookiesPerDay : function(){
-    var numOpenHours = hoursOfOperation().length;
-    for (var i = 0; i < numOpenHours; i++){
-      var cookiesThisHour = Math.round(this.customersPerHour() * this.averageCookiesPerCustomer);
-      this.logCookiesPerDay.push(cookiesThisHour);
-      this.totalCookiesPerDay += cookiesThisHour;
-    }
-  },
-  printCookiesPerDay : function(){
-    this.calcCookiesPerDay();
-    var temp = [];
-    for (var i = 0; i < openHoursArr.length; i++){
-      var phrase = `${openHoursArr[i]}: ${this.logCookiesPerDay[i]} cookies`;
-      temp.push(phrase);
-    }
-    temp.push(`Total: ${this.totalCookiesPerDay} cookies`);
+  // set up our DOM elements needed
+  var trEl = document.createElement('tr'); // create a table row
+  var tdEl = document.createElement('td');
 
-    var liEl = document.createElement('li');
-    var h2El = document.createElement('h2');
-    var ulEl = document.createElement('ul');
+  tdEl.textContent = this.location;
+  trEl.appendChild(tdEl);
+  for(var i = 0; i < this.logOfCookiesPerDay.length; i++){
+    tdEl = document.createElement('td');
+    tdEl.textContent = this.logOfCookiesPerDay[i];
+    trEl.appendChild(tdEl);
 
-    h2El.textContent = this.location;
-    liEl.appendChild(h2El);
-    liEl.appendChild(ulEl);
+    totals[i] += this.logOfCookiesPerDay[i];
+  }
+  tdEl = document.createElement('td');
+  tdEl.textContent = this.totalCookiesPerDay;
+  trEl.appendChild(tdEl);
 
-    for(var j = 0; j < temp.length; j++){
-      var innerLiEl = document.createElement('li');
-      innerLiEl.textContent = temp[j];
-      ulEl.appendChild(innerLiEl);
-
-    }
-    salesListContainer.appendChild(liEl);
-  },
-  printShop : function(){},
+  // append our new list onto the page
+  salesListContainer.appendChild(trEl);
 };
 
-// ----------------------------- Alki -----------------------------
 
-var alki = {
-  location : 'Alki',
-  minHourlyCustomers : 2,
-  maxHourlyCustomers : 16,
-  averageCookiesPerCustomer : 4.6,
-  customersPerHour : function(){
-    var min = Math.ceil(this.minHourlyCustomers); // make sure minimum is rounded up to a whole integer
-    var max = Math.floor(this.maxHourlyCustomers); // make sure maximum is rounded down to a whole integer
-    var getRandom = Math.random() * (max - min + 1) + min; // generate a random number, ensure it is between equal to or beteween min and max.
-    var roundAnswer = Math.floor(getRandom); // round random number to a whole integer
-    return roundAnswer;
-  },
-  totalCookiesPerDay : 0,
-  logOfCookiesPerDay : [],
-  calcCookiesPerDay : function(){
-    var numOpenHours = hoursOfOperation().length;
-    for (var i = 0; i < numOpenHours; i++){
-      var cookiesThisHour = Math.round(this.customersPerHour() * this.averageCookiesPerCustomer);
-      this.logOfCookiesPerDay.push(cookiesThisHour);
-      this.totalCookiesPerDay += cookiesThisHour;
-    }
-  },
-  printCookiesPerDay : function(){
-    this.calcCookiesPerDay();
-    var temp = [];
-    for (var i = 0; i < openHoursArr.length; i++){
-      var phrase = `${openHoursArr[i]}: ${this.logOfCookiesPerDay[i]} cookies`;
-      temp.push(phrase);
-    }
-    temp.push(`Total: ${this.totalCookiesPerDay} cookies`);
+// -------------  add shop information and display on the page  -----------------------
 
-    var liEl = document.createElement('li');
-    var h2El = document.createElement('h2');
-    var ulEl = document.createElement('ul');
+shops.push(new CookieShop('1st and Pike', 23, 65, 6.3));
+shops.push(new CookieShop('SeaTac Airport', 3, 24, 1.2));
+shops.push(new CookieShop('Seattle Center', 11, 38, 3.7));
+shops.push(new CookieShop('Capitol Hill', 20, 38, 2.3));
+shops.push(new CookieShop('Alki', 2, 16, 4.6));
 
-    h2El.textContent = this.location;
-    liEl.appendChild(h2El);
-    liEl.appendChild(ulEl);
+var displaySalesData = function(){
 
-    for(var j = 0; j < temp.length; j++){
-      var innerLiEl = document.createElement('li');
-      innerLiEl.textContent = temp[j];
-      ulEl.appendChild(innerLiEl);
+  // add header
+  var trEl = document.createElement('tr'); // create a table row
+  var thEl = document.createElement('th'); // create a table head cell
+  thEl.textContent = 'Location';
+  trEl.appendChild(thEl);
+  for(var i = 0; i < openHoursArr.length; i++){
+    thEl = document.createElement('th');
+    thEl.textContent = openHoursArr[i];
+    trEl.appendChild(thEl);
+  }
+  thEl = document.createElement('th');
+  thEl.textContent = 'Totals';
+  trEl.appendChild(thEl);
+  salesListContainer.appendChild(trEl);
 
-    }
-    salesListContainer.appendChild(liEl);
-  },
-  printShop : function(){},
+  
+  // add store data
+  for (var j = 0; j < shops.length; j++){
+    shops[j].printCookiesPerDay();
+  }
+
+
+  // add footer
+  trEl = document.createElement('tr'); // create a table row
+  var tdEl = document.createElement('td'); // create a table data cell
+  tdEl.textContent = 'Totals';
+  trEl.appendChild(tdEl);
+  for(var k = 0; k < totals.length; k++){
+    tdEl = document.createElement('td');
+    tdEl.textContent = totals[k];
+    trEl.appendChild(tdEl);
+  }
+  salesListContainer.appendChild(trEl);
+
 };
 
-// ------------------- Print information to the page -------------
-
-var cookieShops = [firstAndPike, seaTacAirport, seattleCenter, capitolHill, alki]; // array with all our shops
-
-// call the print cookies per day method on all the shops
-// this will add them to the sales page
-for(var i = 0; i < cookieShops.length; i++){
-  cookieShops[i].printCookiesPerDay();
-}
-
+displaySalesData();
