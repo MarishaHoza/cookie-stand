@@ -43,7 +43,7 @@ function hoursOfOperation(){
 // ----------------------------- First and Pike -----------------------------
 
 var firstAndPike = {
-  name : 'First and Pike',
+  location : 'First and Pike',
   minHourlyCustomers : 23,
   maxHourlyCustomers : 65,
   averageCookiesPerCustomer : 6.3,
@@ -77,7 +77,7 @@ var firstAndPike = {
     var liEl = document.createElement('li');
     var h2El = document.createElement('h2');
     var ulEl = document.createElement('ul');
-    h2El.textContent = this.name;
+    h2El.textContent = this.location;
     liEl.appendChild(h2El);
     liEl.appendChild(ulEl);
 
@@ -97,7 +97,7 @@ var firstAndPike = {
 // ----------------------------- SeaTac Airport -----------------------------
 
 var seaTacAirport = {
-  name : 'SeaTac Airport',
+  location : 'SeaTac Airport',
   minHourlyCustomers : 3,
   maxHourlyCustomers : 24,
   averageCookiesPerCustomer : 1.2,
@@ -131,7 +131,7 @@ var seaTacAirport = {
     var h2El = document.createElement('h2');
     var ulEl = document.createElement('ul');
 
-    h2El.textContent = this.name;
+    h2El.textContent = this.location;
     liEl.appendChild(h2El);
     liEl.appendChild(ulEl);
 
@@ -149,7 +149,7 @@ var seaTacAirport = {
 // ----------------------------- Seattle Center -----------------------------
 
 var seattleCenter = {
-  name : 'Seattle Center',
+  location : 'Seattle Center',
   minHourlyCustomers : 11,
   maxHourlyCustomers : 38,
   averageCookiesPerCustomer : 3.7,
@@ -183,7 +183,7 @@ var seattleCenter = {
     var h2El = document.createElement('h2');
     var ulEl = document.createElement('ul');
 
-    h2El.textContent = this.name;
+    h2El.textContent = this.location;
     liEl.appendChild(h2El);
     liEl.appendChild(ulEl);
 
@@ -201,7 +201,7 @@ var seattleCenter = {
 // ----------------------------- Capitol Hill -----------------------------
 
 var capitolHill = {
-  name : 'Capitol Hill',
+  location : 'Capitol Hill',
   minHourlyCustomers : 20,
   maxHourlyCustomers : 38,
   averageCookiesPerCustomer : 2.3,
@@ -235,7 +235,7 @@ var capitolHill = {
     var h2El = document.createElement('h2');
     var ulEl = document.createElement('ul');
 
-    h2El.textContent = this.name;
+    h2El.textContent = this.location;
     liEl.appendChild(h2El);
     liEl.appendChild(ulEl);
 
@@ -253,7 +253,7 @@ var capitolHill = {
 // ----------------------------- Alki -----------------------------
 
 var alki = {
-  name : 'Alki',
+  location : 'Alki',
   minHourlyCustomers : 2,
   maxHourlyCustomers : 16,
   averageCookiesPerCustomer : 4.6,
@@ -287,7 +287,7 @@ var alki = {
     var h2El = document.createElement('h2');
     var ulEl = document.createElement('ul');
 
-    h2El.textContent = this.name;
+    h2El.textContent = this.location;
     liEl.appendChild(h2El);
     liEl.appendChild(ulEl);
 
@@ -311,3 +311,4 @@ var cookieShops = [firstAndPike, seaTacAirport, seattleCenter, capitolHill, alki
 for(var i = 0; i < cookieShops.length; i++){
   cookieShops[i].printCookiesPerDay();
 }
+
