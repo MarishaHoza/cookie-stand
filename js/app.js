@@ -119,35 +119,7 @@ CookieShop.prototype.calcCookiesPerDay = function(){
   }
 };
 
-CookieShop.prototype.renderSalesData = function(){
-  this.calcCookiesPerDay(); // create the array of the number of cookeies each hour
-
-  // set up our DOM elements needed
-  var trEl = document.createElement('tr'); // create a table row
-  var tdEl = document.createElement('td');
-
-  tdEl.textContent = this.location;
-  trEl.appendChild(tdEl);
-  for(var i = 0; i < this.logOfCookiesPerDay.length; i++){
-    tdEl = document.createElement('td');
-    tdEl.textContent = this.logOfCookiesPerDay[i];
-    trEl.appendChild(tdEl);
-
-    totals[i] += this.logOfCookiesPerDay[i]; // add the current location's total this hour to the global totals
-  }
-  tdEl = document.createElement('td');
-  tdEl.textContent = this.totalCookiesPerDay;
-  trEl.appendChild(tdEl);
-
-  // append our new list onto the page
-  salesListContainer.appendChild(trEl);
-};
-
 CookieShop.prototype.calcCookieTossersPerDay = function(){
-  if (this.logOfCookieTossersPerDay === null){
-    this.calcCookiesPerDay();
-  }
-
   for (var i = 0; i < numOpenHours; i++){
     var workersNeeded = 2;
     var customersThisHour = this.logOfCookiesPerDay[i]/this.averageCookiesPerCustomer;
@@ -158,8 +130,13 @@ CookieShop.prototype.calcCookieTossersPerDay = function(){
   }
 };
 
-CookieShop.prototype.renderCookieTossers = function(){
-  this.calcCookieTossersPerDay(); // create the array of the number of tossers needed each hour
+CookieShop.prototype.render = function(logToRender, containerToRender, needsTotals){
+  if (this.logOfCookiesPerDay.length === 0){
+    this.calcCookiesPerDay(); // create the array of the number of cookeies each hour
+  }
+  if (this.logOfCookieTossersPerDay.length === 0){
+    this.calcCookieTossersPerDay(); // create the array of the number of tossers needed each hour
+  }
 
   // set up our DOM elements needed
   var trEl = document.createElement('tr'); // create a table row
@@ -167,14 +144,21 @@ CookieShop.prototype.renderCookieTossers = function(){
 
   tdEl.textContent = this.location;
   trEl.appendChild(tdEl);
-  for(var i = 0; i < this.logOfCookieTossersPerDay.length; i++){
+  for(var i = 0; i < logToRender.length; i++){
     tdEl = document.createElement('td');
-    tdEl.textContent = this.logOfCookieTossersPerDay[i];
+    tdEl.textContent = logToRender[i];
+    trEl.appendChild(tdEl);
+
+    totals[i] += logToRender[i]; // add the current location's total this hour to the global totals
+  }
+  if (needsTotals === true){
+    tdEl = document.createElement('td');
+    tdEl.textContent = this.totalCookiesPerDay;
     trEl.appendChild(tdEl);
   }
 
   // append our new list onto the page
-  cookieTosserContainer.appendChild(trEl);
+  containerToRender.appendChild(trEl);
 };
 
 
@@ -201,7 +185,7 @@ var displaySalesData = function(){
 
   // add store data
   for (var j = 0; j < shops.length; j++){
-    shops[j].renderSalesData();
+    shops[j].render(shops[j].logOfCookiesPerDay, salesListContainer, true);
   }
 
   // add footer
@@ -214,7 +198,7 @@ var displayCookieTosserData = function(){
 
   // add store data
   for (var k = 0; k < shops.length; k++){
-    shops[k].renderCookieTossers();
+    shops[k].render(shops[k].logOfCookieTossersPerDay, cookieTosserContainer, false);
   }
 
   // add footer
