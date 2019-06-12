@@ -15,14 +15,32 @@
       </nav>
     </header>
     <main>
-      <li>
-        <h2 class="centered">Sales Data</h1>
-        <table id="sales-lists"></table>
-      </li>
-      <li>
-        <h2 class="centered">Number of Cookie Tossers Needed</h2>
-        <table id="cookie-tosser-lists"></table>
-      </li>
+      <ul>
+        <li>
+          <h2 class="centered">Sales Data</h1>
+          <table id="sales-lists"></table>
+        </li>
+        <li>
+          <h2 class="centered">Number of Cookie Tossers Needed</h2>
+          <table id="cookie-tosser-lists"></table>
+        </li>
+        <li>
+          <form id = "newShop">
+            <fieldset>
+              <legend>Create a New Shop</legend>
+              <lable for = "location">Location</lable>
+              <input name = "location" type = "text"/>
+              <lable for = "minHourlyCustomers">Minimum Customers Per Hour</lable>
+              <input name = "minHourlyCustomers" type = "number"/>
+              <lable for = "maxHourlyCustomers">Maximum Customers Per Hour</lable>
+              <input name = "maxHourlyCustomers" type = "number"/>
+              <lable for = "averageCookiesPerCustomer">Average Cookies Purchased by Customers</lable>
+              <input name = "averageCookiesPerCustomer" type = "number"/>
+              <input type = "submit"/>
+            </fieldset>
+          </form>
+        </li>
+      </ul>
     </main>
 
     <script src="../js/app.js"></script>
