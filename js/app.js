@@ -3,9 +3,13 @@
 // --------------------------- global variables ---------------------------
 
 var openHoursArr = hoursOfOperation();
-var salesListContainer =  document.getElementById('sales-lists');
+var numOpenHours = openHoursArr.length;
+var cookieTosserCustomers = 20; // each cookie tosser can serve 20 customers per hour
 var shops = [];
 var totals = [];
+
+var salesListContainer =  document.getElementById('sales-lists');
+var cookieTosserContainer = document.getElementById('cookie-tosser-lists');
 
 // initiate the totals array with a zero at each time
 for (var i = 0; i < openHoursArr.length; i++){
@@ -51,7 +55,7 @@ function calcTotal(){
 // --------------------------- Other Functions ---------------------------
 
 // to create the table header
-var renderHeader = function (){
+var renderHeader = function (container, needsGrandTotals){
   var trEl = document.createElement('tr'); // create a table row
   var thEl = document.createElement('th'); // create a table head cell
   thEl.textContent = 'Location';
@@ -61,14 +65,16 @@ var renderHeader = function (){
     thEl.textContent = openHoursArr[i];
     trEl.appendChild(thEl);
   }
-  thEl = document.createElement('th');
-  thEl.textContent = 'Totals';
-  trEl.appendChild(thEl);
-  salesListContainer.appendChild(trEl);
+  if (needsGrandTotals === true){
+    thEl = document.createElement('th');
+    thEl.textContent = 'Totals';
+    trEl.appendChild(thEl);
+  }
+  container.appendChild(trEl);
 };
 
 // to create the table footer
-var renderFooter = function(){
+var renderFooter = function(container, needsGrandTotals){
   var trEl = document.createElement('tr'); // create a table row
   var tdEl = document.createElement('td'); // create a table data cell
   tdEl.textContent = 'Totals';
@@ -78,10 +84,12 @@ var renderFooter = function(){
     tdEl.textContent = totals[k];
     trEl.appendChild(tdEl);
   }
-  tdEl = document.createElement('td');
-  tdEl.textContent = calcTotal();
-  trEl.appendChild(tdEl);
-  salesListContainer.appendChild(trEl);
+  if (needsGrandTotals === true){
+    tdEl = document.createElement('td');
+    tdEl.textContent = calcTotal();
+    trEl.appendChild(tdEl);
+  }
+  container.appendChild(trEl);
 };
 
 
@@ -94,6 +102,7 @@ var CookieShop = function(location, minHourlyCustomers, maxHourlyCustomers, aver
   this.averageCookiesPerCustomer = averageCookiesPerCustomer;
   this.totalCookiesPerDay = 0;
   this.logOfCookiesPerDay = [];
+  this.logOfCookieTossersPerDay = [];
 };
 
 CookieShop.prototype.customersPerHour = function(){
@@ -103,7 +112,6 @@ CookieShop.prototype.customersPerHour = function(){
 };
 
 CookieShop.prototype.calcCookiesPerDay = function(){
-  var numOpenHours = hoursOfOperation().length;
   for (var i = 0; i < numOpenHours; i++){
     var cookiesThisHour = Math.round(this.customersPerHour() * this.averageCookiesPerCustomer);
     this.logOfCookiesPerDay.push(cookiesThisHour);
@@ -111,7 +119,7 @@ CookieShop.prototype.calcCookiesPerDay = function(){
   }
 };
 
-CookieShop.prototype.render = function(){
+CookieShop.prototype.renderSalesData = function(){
   this.calcCookiesPerDay(); // create the array of the number of cookeies each hour
 
   // set up our DOM elements needed
@@ -135,6 +143,40 @@ CookieShop.prototype.render = function(){
   salesListContainer.appendChild(trEl);
 };
 
+CookieShop.prototype.calcCookieTossersPerDay = function(){
+  if (this.logOfCookieTossersPerDay === null){
+    this.calcCookiesPerDay();
+  }
+
+  for (var i = 0; i < numOpenHours; i++){
+    var workersNeeded = 2;
+    var customersThisHour = this.logOfCookiesPerDay[i]/this.averageCookiesPerCustomer;
+    if (customersThisHour/cookieTosserCustomers > 2) {
+      workersNeeded = Math.ceil(customersThisHour/cookieTosserCustomers);
+    }
+    this.logOfCookieTossersPerDay.push(workersNeeded);
+  }
+};
+
+CookieShop.prototype.renderCookieTossers = function(){
+  this.calcCookieTossersPerDay(); // create the array of the number of tossers needed each hour
+
+  // set up our DOM elements needed
+  var trEl = document.createElement('tr'); // create a table row
+  var tdEl = document.createElement('td');
+
+  tdEl.textContent = this.location;
+  trEl.appendChild(tdEl);
+  for(var i = 0; i < this.logOfCookieTossersPerDay.length; i++){
+    tdEl = document.createElement('td');
+    tdEl.textContent = this.logOfCookieTossersPerDay[i];
+    trEl.appendChild(tdEl);
+  }
+
+  // append our new list onto the page
+  cookieTosserContainer.appendChild(trEl);
+};
+
 
 // ---------------------------  add shop information ---------------------------
 
@@ -155,15 +197,34 @@ shops.push(new CookieShop('Alki', 2, 16, 4.6));
 // --------------------------- Render to the page ---------------------------
 var displaySalesData = function(){
   // add header
-  renderHeader();
+  renderHeader(salesListContainer, true);
 
   // add store data
   for (var j = 0; j < shops.length; j++){
-    shops[j].render();
+    shops[j].renderSalesData();
   }
 
   // add footer
-  renderFooter();
+  renderFooter(salesListContainer, true);
 };
 
-displaySalesData();
+var displayCookieTosserData = function(){
+  // add header
+  renderHeader(cookieTosserContainer, false);
+
+  // add store data
+  for (var k = 0; k < shops.length; k++){
+    shops[k].renderCookieTossers();
+  }
+
+  // add footer
+  // renderFooter();
+};
+
+
+var renderAll = function(){
+  displaySalesData();
+  displayCookieTosserData();
+};
+
+renderAll();
