@@ -200,11 +200,7 @@ var displayCookieTosserData = function(){
   for (var k = 0; k < shops.length; k++){
     shops[k].render(shops[k].logOfCookieTossersPerDay, cookieTosserContainer, false);
   }
-
-  // add footer
-  // renderFooter();
 };
-
 
 var renderAll = function(){
   displaySalesData();
