@@ -16,6 +16,7 @@ for (var i = 0; i < openHoursArr.length; i++){
   totals.push(0);
 }
 
+var newShop = document.getElementById('newShop');
 
 // --------------------------- global functions ---------------------------
 
@@ -76,6 +77,7 @@ var renderHeader = function (container, needsGrandTotals){
 // to create the table footer
 var renderFooter = function(container, needsGrandTotals){
   var trEl = document.createElement('tr'); // create a table row
+  trEl.id = 'footer';
   var tdEl = document.createElement('td'); // create a table data cell
   tdEl.textContent = 'Totals';
   trEl.appendChild(tdEl);
@@ -103,6 +105,8 @@ var CookieShop = function(location, minHourlyCustomers, maxHourlyCustomers, aver
   this.totalCookiesPerDay = 0;
   this.logOfCookiesPerDay = [];
   this.logOfCookieTossersPerDay = [];
+  this.render(this.logOfCookiesPerDay, salesListContainer, true);
+  this.render(this.logOfCookieTossersPerDay, cookieTosserContainer, false);
 };
 
 CookieShop.prototype.customersPerHour = function(){
@@ -161,6 +165,18 @@ CookieShop.prototype.render = function(logToRender, containerToRender, needsTota
   containerToRender.appendChild(trEl);
 };
 
+// --------------------------- Render to the page ---------------------------
+
+// add header
+renderHeader(cookieTosserContainer, false);
+
+// add header
+renderHeader(salesListContainer, true);
+
+// var renderAll = function(){
+//   displaySalesData();
+//   displayCookieTosserData();
+// };
 
 // ---------------------------  add shop information ---------------------------
 
@@ -177,34 +193,31 @@ shops.push(new CookieShop('Seattle Center', 11, 38, 3.7));
 shops.push(new CookieShop('Capitol Hill', 20, 38, 2.3));
 shops.push(new CookieShop('Alki', 2, 16, 4.6));
 
+//--------------------------- Render New Store Form--------------------------
 
-// --------------------------- Render to the page ---------------------------
-var displaySalesData = function(){
-  // add header
-  renderHeader(salesListContainer, true);
+//form input
+var handleFormSubmit = function (event) {
+  event.preventDefault();
 
-  // add store data
-  for (var j = 0; j < shops.length; j++){
-    shops[j].render(shops[j].logOfCookiesPerDay, salesListContainer, true);
-  }
+  var location = event.target.location.value;
+  var minHourlyCustomers = Number(event.target.minHourlyCustomers.value);
+  var maxHourlyCustomers = Number(event. target.maxHourlyCustomers.value);
+  var averageCookiesPerCustomer = Number(event.target.averageCookiesPerCustomer.value);
+  console.log (location, minHourlyCustomers, maxHourlyCustomers, averageCookiesPerCustomer);
 
-  // add footer
+  shops.push(new CookieShop(location, minHourlyCustomers, maxHourlyCustomers, averageCookiesPerCustomer));
+  console.log(shops);
+
+  var footer = document.getElementById('footer');
+  salesListContainer.removeChild(footer);
+
   renderFooter(salesListContainer, true);
+  newShop.reset();
 };
 
-var displayCookieTosserData = function(){
-  // add header
-  renderHeader(cookieTosserContainer, false);
+newShop.addEventListener('submit', handleFormSubmit);
 
-  // add store data
-  for (var k = 0; k < shops.length; k++){
-    shops[k].render(shops[k].logOfCookieTossersPerDay, cookieTosserContainer, false);
-  }
-};
 
-var renderAll = function(){
-  displaySalesData();
-  displayCookieTosserData();
-};
+// add footer
+renderFooter(salesListContainer, true);
 
-renderAll();
