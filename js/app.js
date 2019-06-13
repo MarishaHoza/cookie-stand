@@ -203,16 +203,18 @@ var handleFormSubmit = function (event) {
   var minHourlyCustomers = Number(event.target.minHourlyCustomers.value);
   var maxHourlyCustomers = Number(event. target.maxHourlyCustomers.value);
   var averageCookiesPerCustomer = Number(event.target.averageCookiesPerCustomer.value);
-  console.log (location, minHourlyCustomers, maxHourlyCustomers, averageCookiesPerCustomer);
 
-  shops.push(new CookieShop(location, minHourlyCustomers, maxHourlyCustomers, averageCookiesPerCustomer));
-  console.log(shops);
+  if (minHourlyCustomers > maxHourlyCustomers){
+    alert('min customers must be less than or equal to max');
+  } else {
+    shops.push(new CookieShop(location, minHourlyCustomers, maxHourlyCustomers, averageCookiesPerCustomer));
 
-  var footer = document.getElementById('footer');
-  salesListContainer.removeChild(footer);
+    var footer = document.getElementById('footer');
+    salesListContainer.removeChild(footer);
 
-  renderFooter(salesListContainer, true);
-  newShop.reset();
+    renderFooter(salesListContainer, true);
+    newShop.reset();
+  }
 };
 
 newShop.addEventListener('submit', handleFormSubmit);
