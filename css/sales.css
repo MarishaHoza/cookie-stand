@@ -1,0 +1,86 @@
+main {
+  margin-top: 30px;
+}
+
+main > ul > li {
+  width: 100%;
+  margin-bottom: 50px;
+}
+
+main > ul > li > h2 {
+  font-size: 1.5em;
+}
+
+
+#sales-lists, #cookie-tosser-lists {
+  overflow: hidden;
+  width: 1350px;
+  margin: 10px auto;
+}
+
+table {
+  border: 5px solid #913710;
+  border-radius: 25px;
+  padding: 10px;
+  text-align: center;
+  border-spacing: 0;
+}
+
+th {
+  border-bottom: 2px solid #913710;
+  margin: 0;
+  padding: 0;
+  font-weight: bold;
+  font-size: 1em;
+}
+
+td {
+  margin: 0;
+  padding: 2px;
+}
+
+#sales-lists tr:last-child>td:last-child {
+  color: #0B6340;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+th:first-child, td:first-child {
+  border-right: 2px solid #913710;
+}
+
+main > ul > li > form {
+  width: 450px;
+  margin: auto;
+}
+
+fieldset {
+  border: 5px solid #0B6340;
+  border-radius: 25px;
+  padding: 10px;
+}
+
+legend {
+  padding: 5px;
+  text-align: center;
+  font-size: 1.5em;
+}
+
+form li {
+  margin: 10px;
+}
+
+form input {
+  float: right;
+  width: 40%;
+}
+
+form li:last-child input{
+  width: 50%;
+  margin: 15px 25%;
+  height: 3em;
+  background-color: #0B6340;
+  color: #fafafa;
+  border: none;
+  border-radius: 5px;
+}
