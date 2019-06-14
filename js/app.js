@@ -7,13 +7,15 @@ var numOpenHours = openHoursArr.length;
 var cookieTosserCustomers = 20; // each cookie tosser can serve 20 customers per hour
 var shops = [];
 var totals = [];
+var tosserTotals = [];
 
 var salesListContainer =  document.getElementById('sales-lists');
 var cookieTosserContainer = document.getElementById('cookie-tosser-lists');
 
-// initiate the totals array with a zero at each time
+// initiate the totals and tosserTotals arrays with a zero at each time
 for (var i = 0; i < openHoursArr.length; i++){
   totals.push(0);
+  tosserTotals.push(0);
 }
 
 var newShop = document.getElementById('newShop');
@@ -44,10 +46,10 @@ function hoursOfOperation(){
 }
 
 // to calculate the total number of cookies at all locations
-function calcTotal(){
+function calcTotal(totalsArray){
   var total = 0;
-  for (var i = 0; i < totals.length; i++){
-    total += totals[i];
+  for (var i = 0; i < totalsArray.length; i++){
+    total += totalsArray[i];
   }
   return total;
 }
@@ -75,20 +77,20 @@ var renderHeader = function (container, needsGrandTotals){
 };
 
 // to create the table footer
-var renderFooter = function(container, needsGrandTotals){
+var renderFooter = function(container, needsGrandTotals, totalsArray, idName){
   var trEl = document.createElement('tr'); // create a table row
-  trEl.id = 'footer';
+  trEl.id = idName;
   var tdEl = document.createElement('td'); // create a table data cell
   tdEl.textContent = 'Totals';
   trEl.appendChild(tdEl);
-  for(var k = 0; k < totals.length; k++){
+  for(var k = 0; k < totalsArray.length; k++){
     tdEl = document.createElement('td');
-    tdEl.textContent = totals[k];
+    tdEl.textContent = totalsArray[k];
     trEl.appendChild(tdEl);
   }
   if (needsGrandTotals === true){
     tdEl = document.createElement('td');
-    tdEl.textContent = calcTotal();
+    tdEl.textContent = calcTotal(totalsArray);
     trEl.appendChild(tdEl);
   }
   container.appendChild(trEl);
@@ -105,8 +107,8 @@ var CookieShop = function(location, minHourlyCustomers, maxHourlyCustomers, aver
   this.totalCookiesPerDay = 0;
   this.logOfCookiesPerDay = [];
   this.logOfCookieTossersPerDay = [];
-  this.render(this.logOfCookiesPerDay, salesListContainer, true);
-  this.render(this.logOfCookieTossersPerDay, cookieTosserContainer, false);
+  this.render(this.logOfCookiesPerDay, totals, salesListContainer, true);
+  this.render(this.logOfCookieTossersPerDay, tosserTotals, cookieTosserContainer, false);
 };
 
 CookieShop.prototype.customersPerHour = function(){
@@ -134,7 +136,7 @@ CookieShop.prototype.calcCookieTossersPerDay = function(){
   }
 };
 
-CookieShop.prototype.render = function(logToRender, containerToRender, needsTotals){
+CookieShop.prototype.render = function(logToRender, totalsToRender, containerToRender, needsTotals){
   if (this.logOfCookiesPerDay.length === 0){
     this.calcCookiesPerDay(); // create the array of the number of cookeies each hour
   }
@@ -153,7 +155,7 @@ CookieShop.prototype.render = function(logToRender, containerToRender, needsTota
     tdEl.textContent = logToRender[i];
     trEl.appendChild(tdEl);
 
-    totals[i] += logToRender[i]; // add the current location's total this hour to the global totals
+    totalsToRender[i] += logToRender[i]; // add the current location's total this hour to the global totals
   }
   if (needsTotals === true){
     tdEl = document.createElement('td');
@@ -167,10 +169,8 @@ CookieShop.prototype.render = function(logToRender, containerToRender, needsTota
 
 // --------------------------- Render to the page ---------------------------
 
-// add header
+// add headers
 renderHeader(cookieTosserContainer, false);
-
-// add header
 renderHeader(salesListContainer, true);
 
 // var renderAll = function(){
@@ -209,10 +209,13 @@ var handleFormSubmit = function (event) {
   } else {
     shops.push(new CookieShop(location, minHourlyCustomers, maxHourlyCustomers, averageCookiesPerCustomer));
 
-    var footer = document.getElementById('footer');
+    var footer = document.getElementById('sales-footer');
     salesListContainer.removeChild(footer);
+    var footer2 = document.getElementById('tosser-footer');
+    cookieTosserContainer.removeChild(footer2);
 
-    renderFooter(salesListContainer, true);
+    renderFooter(salesListContainer, true, totals, 'sales-footer');
+    renderFooter(cookieTosserContainer, false, tosserTotals, 'tosser-footer');
     newShop.reset();
   }
 };
@@ -221,5 +224,6 @@ newShop.addEventListener('submit', handleFormSubmit);
 
 
 // add footer
-renderFooter(salesListContainer, true);
+renderFooter(salesListContainer, true, totals, 'sales-footer');
+renderFooter(cookieTosserContainer, false, tosserTotals, 'tosser-footer');
 

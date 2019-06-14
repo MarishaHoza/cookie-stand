@@ -2,47 +2,73 @@
 <html>
   <head>
     <title>Salmon Cookies - Sales</title>
+    <link href="../css/reset.css" type="text/css" rel="stylesheet"/>
     <link href="../css/style.css" type="text/css" rel="stylesheet"/>
+    <link href="../css/sales.css" type="text/css" rel="stylesheet"/>
   </head>
   <body>
     <header>
-      <a id="nav-logo" class="salmon-fish" href="../index.html">Salmon Cookie</a>
       <nav>
-        <ul>
-          <li><a href="./sales.html">Sales</a></li>
-          <li><a href="../index.html">Home</a></li>
-        </ul>
+        <section>
+          <a class="salmon-fish" href="../index.html">
+            <img src="../img/salmon.png">
+            Salmon Cookie
+            <img src="../img/chinook.png">
+          </a>
+        </section>
+        <section>
+          <ul>
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../pages/about.html">About</a></li>
+            <li><a href="../pages/sales.html">Sales</a></li>
+          </ul>
+        </section>
       </nav>
     </header>
+
     <main>
       <ul>
         <li>
-          <h2 class="centered">Sales Data</h1>
+          <h2>Sales Data</h1>
           <table id="sales-lists"></table>
         </li>
         <li>
-          <h2 class="centered">Number of Cookie Tossers Needed</h2>
+          <h2>Number of Cookie Tossers Needed</h2>
           <table id="cookie-tosser-lists"></table>
         </li>
         <li>
-          <form id = "newShop">
+          <form id="newShop">
             <fieldset>
               <legend>Create a New Shop</legend>
-              <lable for = "location">Location</lable>
-              <input name = "location" type = "text"/>
-              <lable for = "minHourlyCustomers">Minimum Customers Per Hour</lable>
-              <input name = "minHourlyCustomers" type = "number"/>
-              <lable for = "maxHourlyCustomers">Maximum Customers Per Hour</lable>
-              <input name = "maxHourlyCustomers" type = "number"/>
-              <lable for = "averageCookiesPerCustomer">Average Cookies Purchased by Customers</lable>
-              <input name = "averageCookiesPerCustomer" type = "number"/>
-              <input type = "submit"/>
+              <ul>
+                <li>
+                  <label for="location">Location Name:</label>
+                  <input name="location" type="text"/>
+                </li>
+                <li>
+                  <label for="minHourlyCustomers">Minimum Customers Per Hour:</label>
+                  <input name="minHourlyCustomers" type="number"/>
+                </li>
+                <li>
+                  <label for="maxHourlyCustomers">Maximum Customers Per Hour:</label>
+                  <input name="maxHourlyCustomers" type="number"/>
+                </li>
+                <li>
+                  <label for="averageCookiesPerCustomer">Average Cookie Purchase:</label>
+                  <input name="averageCookiesPerCustomer" type="number"/>
+                </li>
+                <li>
+                  <input type="submit"/>
+                </li>
+              </ul>
             </fieldset>
           </form>
         </li>
       </ul>
     </main>
+    <footer>
 
+    </footer>
     <script src="../js/app.js"></script>
   </body>
 </html>
