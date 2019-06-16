@@ -17,7 +17,7 @@ var newShop = document.getElementById('newShop');
 
 // --------------------------- global functions ---------------------------
 
-// initiate the totals and tosserTotals arrays with a zero at each time
+// clear the totals and tosserTotals arrays with a zero at each time
 function clearTotals() {
   for (var i = 0; i < numOpenHours; i++){
     totals[i] = 0;
@@ -25,6 +25,7 @@ function clearTotals() {
   }
 }
 
+// calculate the totals and tosserTotals arrays so that they reflect the correct totals of all locations at each time of day
 function calcTotals(){
   clearTotals();
   for (var i = 0; i < shops.length; i++){
