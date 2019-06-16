@@ -9,12 +9,24 @@ article > h3 {
 }
 
 article > p {
-  width: 50%;
+  width: 55%;
   float: left;
   font-size: 1.1em;
   letter-spacing: 0.05em;
   line-height: 1.5em;
 }
+
+article > p a {
+  text-decoration: none;
+  color: #913710;
+}
+
+article > p a:hover {
+  text-decoration: none;
+  color: #DAB37E;
+}
+
+
 
 article > img {
   height: 300px;
