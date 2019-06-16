@@ -15,14 +15,26 @@ var cookieTosserContainer = document.getElementById('cookie-tosser-lists');
 var newShop = document.getElementById('newShop');
 
 
+// --------------------------- global functions ---------------------------
+
 // initiate the totals and tosserTotals arrays with a zero at each time
-for (var i = 0; i < openHoursArr.length; i++){
-  totals.push(0);
-  tosserTotals.push(0);
+function clearTotals() {
+  for (var i = 0; i < numOpenHours; i++){
+    totals[i] = 0;
+    tosserTotals[i] = 0;
+  }
 }
 
+function calcTotals(){
+  clearTotals();
+  for (var i = 0; i < shops.length; i++){
+    for (var j = 0; j < numOpenHours; j++){
+      totals[j] += shops[i].logOfCookiesPerDay[j];
+      tosserTotals[j] += shops[i].logOfCookieTossersPerDay[j];
+    }
+  }
+}
 
-// --------------------------- global functions ---------------------------
 
 // to create an array of business hours
 function hoursOfOperation(){
@@ -48,7 +60,7 @@ function hoursOfOperation(){
 }
 
 // to calculate the total number of cookies at all locations
-function calcTotal(totalsArray){
+function calcGrandTotal(totalsArray){
   var total = 0;
   for (var i = 0; i < totalsArray.length; i++){
     total += totalsArray[i];
@@ -85,16 +97,17 @@ var renderFooter = function(container, needsGrandTotals, totalsArray, idName){
   var tdEl = document.createElement('td'); // create a table data cell
   tdEl.textContent = 'Totals';
   trEl.appendChild(tdEl);
+
+  calcTotals();
+
   for(var k = 0; k < totalsArray.length; k++){
     tdEl = document.createElement('td');
-
     tdEl.textContent = totalsArray[k];
-
     trEl.appendChild(tdEl);
   }
   if (needsGrandTotals === true){
     tdEl = document.createElement('td');
-    tdEl.textContent = calcTotal(totalsArray);
+    tdEl.textContent = calcGrandTotal(totalsArray);
     trEl.appendChild(tdEl);
   }
   container.appendChild(trEl);
@@ -169,8 +182,6 @@ CookieShop.prototype.render = function(logToRender, totalsToRender, containerToR
     tdEl = document.createElement('td');
     tdEl.textContent = logToRender[i];
     trEl.appendChild(tdEl);
-
-    totalsToRender[i] += logToRender[i]; // add the current location's total this hour to the global totals for all stores
   }
 
   // if we need a total of all items in the log for that day, add another column
